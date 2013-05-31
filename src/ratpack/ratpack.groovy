@@ -8,7 +8,13 @@ ratpack {
   }
 
   get("test") {
-    response.send "test" + " params:" + request.getQueryParams().toString();
+    def params = request.getQueryParams()
+    def b = params.b
+    def s = params.s ?: ''
+    def l = params.l ? params.getAll("l").join("|") : '|';
+    // if just get, the delagate will return a single string, 
+    //def l = params.get("l") ?: ''
+    response.send "test" + " params:" + params.toString() + " b:" + (b?'T':'F') + " s:" + s + " l:" + l
   }
 
   get("test/:a") {
@@ -20,5 +26,7 @@ ratpack {
     def params = request.getQueryParams()
     response.send "test/b" + " all path:" + getAllPathTokens().toString() + " path:" + getPathTokens().toString() + " params:" + params.toString();
   }
-}
+
+  assets "public"
+ }
 }
